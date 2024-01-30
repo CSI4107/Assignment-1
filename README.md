@@ -1,8 +1,8 @@
 # Assignment-1
 
-pip install nltk
+1. `pip install nltk`
 
-Create a script with this code in it and run the script.
+2. Create a script with this code in it and run the script.
 ```py
 import nltk
 
@@ -16,4 +16,6 @@ import nltk
 nltk.download('punkt')
 ```
 
-Change file_path value to the name of the file you want to parse.
+3. Change file_path value in parser.py to the name of the file you want to parse, the example file is used by default.
+
+4. Run parser.py
