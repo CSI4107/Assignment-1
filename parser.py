@@ -2,6 +2,7 @@ import re
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+from operator import itemgetter
 
 def parse_documents(file_content):
     # Splitting the file content into individual documents
@@ -36,8 +37,8 @@ def preprocess_text(text):
     tokens = [token.lower() for token in tokens if token not in punctuation]
     stop_words = set(stopwords.words('english'))
     tokens = [token for token in tokens if token not in stop_words]
-    stemmer = PorterStemmer()
-    tokens = [stemmer.stem(token) for token in tokens]
+    #stemmer = PorterStemmer()
+    #tokens = [stemmer.stem(token) for token in tokens]
     return tokens
 
 def tokenize_documents(documents):
@@ -51,6 +52,23 @@ def tokenize_documents(documents):
     
     return preprocessed_documents
 
+def count_tokens(documents):
+    tokens_count = {}
+
+    for docno, tokens in list(tokenized_documents.items()):
+        for token in tokens['head']:
+            if (token in tokens_count):
+                tokens_count[token] = tokens_count[token] + 1
+            else:
+                tokens_count[token] = 1
+        for token in tokens['text']:
+            if (token in tokens_count):
+                tokens_count[token] = tokens_count[token] + 1
+            else:
+                tokens_count[token] = 1
+    return sorted(tokens_count.items(), key = itemgetter(1), reverse = True)
+
+
 file_path = "AP881113"
 
 parsed_content = read_and_parse(file_path)
@@ -58,6 +76,9 @@ parsed_content = read_and_parse(file_path)
 tokenized_documents = tokenize_documents(parsed_content)
 
 print(f"{len(tokenized_documents)} Documents")
+
+for key, value in count_tokens(tokenized_documents):
+    print(key, value)
 
 for docno, tokens in list(tokenized_documents.items()):
     print(f"DOCNO: {docno}, Tokens: {tokens}")
